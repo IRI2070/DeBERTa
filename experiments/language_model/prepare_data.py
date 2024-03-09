@@ -4,8 +4,9 @@ import sys
 import argparse
 from tqdm import tqdm
 
-def tokenize_data(input, output=None, max_seq_length=512):
-  p,t=deberta.load_vocab(vocab_path=None, vocab_type='spm', pretrained_id='deberta-v3-base')
+def tokenize_data(input, output=None, vocab_path=None, max_seq_length=512):
+  # p,t=deberta.load_vocab(vocab_path=None, vocab_type='spm', pretrained_id='deberta-v3-base')
+  p,t=deberta.load_vocab(vocab_path=vocab_path, vocab_type='spm', pretrained_id=None)
   tokenizer=deberta.tokenizers[t](p)
   if output is None:
     output=input + '.spm'
@@ -32,6 +33,7 @@ def tokenize_data(input, output=None, max_seq_length=512):
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input', required=True, help='The input data path')
 parser.add_argument('-o', '--output', default=None, help='The output data path')
+parser.add_argument('-v', '--vocab', default=None, help='The vocab file path')
 parser.add_argument('--max_seq_length', type=int, default=512, help='Maxium sequence length of inputs')
 args = parser.parse_args()
-tokenize_data(args.input, args.output, args.max_seq_length)
+tokenize_data(args.input, args.output, args.vocab, args.max_seq_length)
